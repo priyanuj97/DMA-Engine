@@ -27,7 +27,7 @@ package tb_DMA;
 
 
 
-	`define Num_DMA_Channels 1
+	`define Num_DMA_Channels 1  // upto 7 channels
 	`define Num_Peripherals 12
 
 	`define Num_Masters 2

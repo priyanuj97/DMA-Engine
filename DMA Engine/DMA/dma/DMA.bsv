@@ -148,7 +148,7 @@ endinstance
 (* descending_urgency = "writeConfig, rl_finishRead" *)
 (* descending_urgency = "writeConfig, rl_startWrite" *)
 module mkDMA( DmaC #(numChannels, numPeripherals) )
-	provisos ( Add#(a__, TLog#(numPeripherals), 4)); //Add#(b__, TMul#(numChannels, 4), 64),  Add#(c__, TLog#(numChannels), 3)); //
+	provisos ( Add#(a__, TLog#(numPeripherals), 4)); //Add#(b__, TMul#(numChannels, 4), 64),  Add#(c__, TLog#(numChannels), 3)); 
 
 	// The DMA contains one master interface, and one slave interface. The processor sends
 	// request through the slave interface to set the config registers.
@@ -577,7 +577,7 @@ module mkDMA( DmaC #(numChannels, numPeripherals) )
 			end
 			if(lv_dma_ccr[0]==1) begin
 				if(currentWriteRs[chanNum][1]==currentReadRs[chanNum][1]) begin	//once the read and write transactions are over
-					if(rg_is_cndtr_zero[chanNum][0]) //TODO check what happens if you read from port 1 here
+					if(rg_is_cndtr_zero[chanNum][0]) 			//TODO check what happens if you read from port 1 here
 						chan_isr[1]= 1;
 				end
 				//The Half Transfer Complete will be set when half transfer is complete.
@@ -607,6 +607,8 @@ module mkDMA( DmaC #(numChannels, numPeripherals) )
 	// For ease of development we want all registers to look like 64
 	// bit resister-- the data size of the config socket.
 	// Create function to map from address to specific registers
+	// rule writeconfig writes the selected register
+	// rule readConfig reads those registers
 	function Tuple2#(Reg#(Bit#(64)), Bool) selectReg( Req_Addr addr );
         Bit#(8) taddr = truncate( addr ) ;
 			
@@ -879,7 +881,7 @@ module mkDMA( DmaC #(numChannels, numPeripherals) )
 			lv_addr= write_addr.awaddr;
 		end
 
-		else begin	//The write request is not 64-bits, therefore return a bus error
+		else begin			//The write request is not 64-bits, therefore return a bus error
 			lv_bresp= AXI4_SLVERR;
 			$display($time,"\tWRITE REQUEST IS NOT OF 64 bits *SLAVE ERROR*");
 		end
@@ -898,17 +900,14 @@ module mkDMA( DmaC #(numChannels, numPeripherals) )
 
 		let lv_ccr_channel_number = ccr_channel_number(lv_addr);
 
-		//{60'b0,dma_isr[0]}
-		//dma_cmar[lv_ccr_channel_number] <= {1'h8, }
-        		`ifdef verbose $display("ccr_channel_number %h lv_addr %h",lv_ccr_channel_number, lv_addr); `endif
+		
+		`ifdef verbose $display("ccr_channel_number %h lv_addr %h",lv_ccr_channel_number, lv_addr); `endif
 			
-		if( lv_ccr_channel_number!='d-1 && isValid ) begin 	//if the current write is happening to one of the channel's CCR.
-			if(lv_data[0]==1 ) begin						//if the channel is being enabled
+		if( lv_ccr_channel_number!='d-1 && isValid ) begin 					//if the current write is happening to one of the channel's CCR.
+			if(lv_data[0]==1 ) begin							//if the channel is being enabled
 				rg_cpa[lv_ccr_channel_number] <= dma_cpar[lv_ccr_channel_number];	//peripheral address is copied
 				//dma_cmar[lv_ccr_channel_number]
 				rg_cma[lv_ccr_channel_number] <= dma_cmar[lv_ccr_channel_number];	//memory address is copied
-				$display("dma_cmar: 'h%h", dma_cmar[lv_ccr_channel_number]);
-				$display("dma_cndtr: 'h%h", dma_cndtr[lv_ccr_channel_number]);
 				rg_cndtr[lv_ccr_channel_number]<= dma_cndtr[lv_ccr_channel_number];	//the cndtr value is saved
 				rg_disable_channel<= tuple3(False,?,?);
 
