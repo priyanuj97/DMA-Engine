@@ -9,3 +9,5 @@ The process is managed by the DMA Controller (DMAC).
 This DMA model is parameterized for upto 7 channels for managing the memory access requests from upto 16 peripherals connected to the channels.
 The DMA has an arbiter which manages the requests of the peripherals by selecting the channel based on the priority levels.
 This model also supports configurable bursts.
+
+P.S. To know more about the DMA Engine, find the file Direct Memory Access.pdf in the repo. 
