@@ -1,6 +1,6 @@
 # DMA-Engine
 
-The DMA Engine is my project work during the 2 months internship in IIT Madras from May to July 2018 for the SHAKTI C-class processor.
+The DMA Engine is my project work during the 2 months internship in IIT Madras from May to July 2018 for the SHAKTI C-class processor, mentored by Sir Arjun Menon, MS Student of IITM under Prof V Kamakoti.
 
 Direct Memory Access (DMA) is a method for transfer of data between memory and peripherals, bypassing the CPU
 for faster memory operations. This keeps the CPU available to perform other operations while performing the data transfer.
