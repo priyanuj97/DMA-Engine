@@ -10,4 +10,4 @@ This DMA model is parameterized for upto 7 channels for managing the memory acce
 The DMA has an arbiter which manages the requests of the peripherals by selecting the channel based on the priority levels.
 This model also supports configurable bursts.
 
-P.S. To know more about the DMA Engine, find the file Direct Memory Access.pdf in the repo. 
+P.S. To know more about the DMA Engine, find the file Direct Memory Access.pdf in the repository. 
